@@ -1,8 +1,8 @@
-import Article from 'src/components/Article'
+import PostList from 'src/components/PostList'
 
 export const QUERY = gql`
-  query BlogPostsQuery {
-    articles: posts {
+  query BlogPostsQuery($take: Int) {
+    articles: posts(take: $take) {
       id
       title
       body
@@ -18,11 +18,5 @@ export const Empty = () => <div>Empty</div>
 export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({ articles }) => {
-  return (
-    <div className="space-y-10">
-      {articles.map((article) => (
-        <Article article={article} key={article.id} summary={true} />
-      ))}
-    </div>
-  )
+  return <PostList articles={articles} />
 }

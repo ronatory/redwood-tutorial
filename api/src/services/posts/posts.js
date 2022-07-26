@@ -1,13 +1,23 @@
 import { db } from 'src/lib/db'
 
-export const posts = () => {
-  return db.post.findMany()
+export const posts = ({ take }) => {
+  return db.post.findMany({ take })
 }
 
 export const post = ({ id }) => {
   return db.post.findUnique({
     where: { id },
   })
+}
+
+export const paginatedPosts = async ({ cursorId, take, skip = 0 }) => {
+  const query = { take, skip, orderBy: { id: 'asc' } }
+
+  if (cursorId) {
+    query.cursor = { id: cursorId }
+  }
+
+  return db.post.findMany(query)
 }
 
 export const createPost = ({ input }) => {
